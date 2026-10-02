@@ -5,10 +5,27 @@ models:
     description: "Cleaned customer records loaded from raw seed data."
     columns:
       - name: customer_id
-        description: "Primary key for customers."
         data_tests:
           - unique
           - not_null
       - name: email
         data_tests:
           - not_null
+
+  - name: stg_orders
+    description: "Cleaned orders data."
+    columns:
+      - name: order_id
+        data_tests:
+          - unique
+          - not_null
+      - name: customer_id
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: status
+        data_tests:
+          - accepted_values:
+              values: ['placed', 'completed', 'returned']
